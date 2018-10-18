@@ -1,0 +1,13 @@
+version: '2.2'
+# trying to emulate this command-line
+#docker run --rm -d -v /home/user/openvpn:/etc/openvpn:ro -p 1194:1194/udp --cap-add=NET_ADMIN openvpn
+
+services:
+        openvpn:
+                build: .
+                cap_add:
+                - NET_ADMIN
+                ports:
+                - "1194:1194/udp"
+                volumes:
+                - /home/user/openvpn:/etc/openvpn:ro
