@@ -6,6 +6,9 @@
 # service file that will monitor the openvpn server processes and make sure
 # they are running correctly (e.g. this will restart them if they crash).
 
+# We use --cd to change into /etc/openvpn so that the ovpn files can use
+# relative directory paths to find other files
+
 find /etc/openvpn -name '*.ovpn' -type f -maxdepth 1 | {
 	while read fn; do
 		BN="`basename "$fn"`"
@@ -13,7 +16,7 @@ find /etc/openvpn -name '*.ovpn' -type f -maxdepth 1 | {
 mkdir "/etc/service/openvpn_${BN}"
 cat > "/etc/service/openvpn_${BN}/run" <<EOF
 #!/bin/sh
-exec openvpn --config "$fn"
+exec openvpn --cd /etc/openvpn --config "$fn"
 EOF
 chmod ugo+rx "/etc/service/openvpn_${BN}/run"
 	done;
